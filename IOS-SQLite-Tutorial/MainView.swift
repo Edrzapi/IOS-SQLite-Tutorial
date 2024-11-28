@@ -10,8 +10,9 @@ struct MainView: View {
     let dbHelper = DatabaseHelper.shared // Access the DBHelper singleton
 
     var body: some View {
-        NavigationView {
+
             VStack(spacing: 30) {
+                Text("User Management").font(.title)
                 // MARK: - Input Fields
                 Group {
                     TextField("Enter Name", text: $userName)
@@ -99,9 +100,9 @@ struct MainView: View {
                     .onAppear(perform: fetchUsers) // Fetch users when the sheet appears
                 }
             }
-            .navigationTitle("SQLite Applicaiton")
+           
         }
-    }
+    
 
     // MARK: - CRUD Functions
 
