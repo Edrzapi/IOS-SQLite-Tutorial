@@ -61,25 +61,34 @@ class DatabaseHelper {
         if sqlite3_prepare_v2(db, insertQuery, -1, &stmt, nil) == SQLITE_OK {
             // Bind parameters
             if sqlite3_bind_text(stmt, 1, name, -1, nil) != SQLITE_OK {
-                print("Error binding name: \(sqlite3_errmsg(db))") // Debug error
+                if let errorMessage = sqlite3_errmsg(db) {
+                    print("Error binding name: \(String(cString: errorMessage))")
+                }
             }
             if sqlite3_bind_int(stmt, 2, Int32(age)) != SQLITE_OK {
-                print("Error binding age: \(sqlite3_errmsg(db))") // Debug error
+                if let errorMessage = sqlite3_errmsg(db) {
+                    print("Error binding age: \(String(cString: errorMessage))")
+                }
             }
 
             // Execute the statement
             if sqlite3_step(stmt) == SQLITE_DONE {
-                print("User added successfully: Name = \(name), Age = \(age)") // Debug success
+                print("User added successfully: Name = \(name), Age = \(age)")
             } else {
-                print("Error executing insert: \(sqlite3_errmsg(db))") // Debug error
+                if let errorMessage = sqlite3_errmsg(db) {
+                    print("Error executing insert: \(String(cString: errorMessage))")
+                }
             }
         } else {
-            print("Error preparing insert: \(sqlite3_errmsg(db))") // Debug error
+            if let errorMessage = sqlite3_errmsg(db) {
+                print("Error preparing insert: \(String(cString: errorMessage))")
+            }
         }
         
         // Finalize statement to free memory
         sqlite3_finalize(stmt)
     }
+
 
 
     // MARK: - Fetch All Users
