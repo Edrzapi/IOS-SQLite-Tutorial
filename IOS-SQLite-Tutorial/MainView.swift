@@ -107,16 +107,25 @@ struct MainView: View {
     // MARK: - CRUD Functions
 
     private func addUser() {
-        guard let age = Int(userAge), !userName.isEmpty else { return }
+        // Ensure the name is not empty and the age is a valid number
+        guard !userName.isEmpty else {
+            print("Error: User name cannot be empty.")
+            return
+        }
+
+        guard let age = Int(userAge), age > 0 else {
+            print("Error: Age must be a valid number greater than 0.")
+            return
+        }
+
+        // Insert the user into the database
         dbHelper.insertUser(name: userName, age: age)
-        fetchUsers() // Refresh user list
+    
     }
 
     private func fetchUsers() {
         // Fetching users from the database
-        users = dbHelper.fetchUsers() // Make sure the result is assigned to the users state array
-        print("Fetched users: \(users)") // Debug print to check users array
-    }
+        users = dbHelper.fetchUsers()    }
 
     private func updateUser() {
         guard let id = Int(userId), let age = Int(userAge), !userName.isEmpty else { return }
@@ -134,3 +143,4 @@ struct MainView: View {
 #Preview {
     MainView()
 }
+
